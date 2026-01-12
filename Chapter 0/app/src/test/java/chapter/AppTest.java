@@ -6,9 +6,21 @@ package chapter;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.lang.reflect.Method;
+
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    // @Test void appHasAGreeting() {
+    //     App classUnderTest = new App();
+    //     assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    // }
+
+    @Test void testStartsWithTest() {
+        assertDoesNotThrow(() -> {
+            Method startsWithTest = App.class.getDeclaredMethod("startsWithTest", String.class);
+            startsWithTest.setAccessible(true);
+            assertTrue((boolean)startsWithTest.invoke(null, "test1"));
+            assertTrue((boolean)startsWithTest.invoke(null, "test3"));
+            assertFalse((boolean)startsWithTest.invoke(null, "1"));
+        });
     }
 }
