@@ -3,12 +3,50 @@
  */
 package chapter;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+    // public String getGreeting() {
+    //     return "Hello World!";
+    // }
+
+    //Port: 3316
+
+    static final String DB_URL = "jdbc:mariadb://localhost:3316/javatest";
+    static final String USER = "root";
+    static final String PASS = "raspberry";
+    static final String testQuery = "SELECT id, test from testing9999";
+
+    private static boolean startsWithTest(String fromDB) {
+        return fromDB.startsWith("test");
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        //System.out.println(new App().getGreeting());
+
+        try {
+            Class.forName("org.mariadb.jdbc.Driver");
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(testQuery))
+            {
+                System.out.println("ID\t|TEST\t|startsWithTest");
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String test = rs.getString("test");
+                    System.out.println("" + id + "\t|" + test + "\t|" + startsWithTest(test));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.exit(2);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 }
