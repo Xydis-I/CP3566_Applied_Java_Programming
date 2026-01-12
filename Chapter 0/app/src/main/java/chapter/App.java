@@ -10,12 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class App {
-    // public String getGreeting() {
-    //     return "Hello World!";
-    // }
-
-    //Port: 3316
-
     static final String DB_URL = "jdbc:mariadb://localhost:3316/javatest";
     static final String USER = "root";
     static final String PASS = "raspberry";
@@ -26,8 +20,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-        //System.out.println(new App().getGreeting());
-
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
